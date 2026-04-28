@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B737NG ATA 21 – Air Systems Quiz</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f0f4ff;
+  --card:#fff;
+  --blue:#4361ee;
+  --blue2:#3a0ca3;
+  --green:#06d6a0;
+  --green2:#029e76;
+  --red:#ef233c;
+  --red2:#b5172d;
+  --yellow:#ffd166;
+  --yellow2:#e6a800;
+  --gray:#8d99ae;
+  --text:#14213d;
+  --border:#e0e6f0;
+  --r:16px;
+}
+html,body{min-height:100vh;background:var(--bg);font-family:'Nunito',sans-serif;color:var(--text)}
+body{display:flex;align-items:center;justify-content:center;padding:16px;background:radial-gradient(ellipse at 20% 0%,#dde1ff 0%,transparent 50%),radial-gradient(ellipse at 80% 100%,#d0ffe9 0%,transparent 50%),var(--bg)}
+
+.wrap{width:100%;max-width:520px}
+
+/* ── SCREENS ── */
+.screen{display:none}
+.screen.on{display:block}
+
+/* ── HOME ── */
+.home-card{background:var(--card);border-radius:24px;padding:32px 28px;box-shadow:0 8px 40px rgba(67,97,238,.12);text-align:center;position:relative;overflow:hidden}
+.home-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(67,97,238,.04),rgba(6,214,160,.04));pointer-events:none}
+.plane{font-size:64px;display:block;animation:bob 3s ease-in-out infinite;margin-bottom:4px;filter:drop-shadow(0 8px 16px rgba(67,97,238,.2))}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-12px) rotate(4deg)}}
+.home-badge{display:inline-block;background:linear-gradient(90deg,var(--blue),var(--blue2));color:#fff;font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;padding:4px 14px;border-radius:99px;margin-bottom:12px}
+.home-h1{font-size:clamp(22px,5vw,30px);font-weight:900;line-height:1.15;margin-bottom:8px}
+.home-h1 span{color:var(--blue)}
+.home-sub{font-size:14px;color:var(--gray);font-weight:600;line-height:1.6;max-width:340px;margin:0 auto 20px}
+.home-pills{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:22px}
+.pill{background:#f0f4ff;border:1.5px solid var(--border);border-radius:99px;padding:5px 12px;font-size:12px;font-weight:700;color:var(--blue2)}
+.home-meta{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:24px}
+.meta-box{background:#f8faff;border:1.5px solid var(--border);border-radius:12px;padding:12px 6px}
+.meta-n{font-size:26px;font-weight:900;color:var(--blue)}
+.meta-l{font-size:10px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.5px;margin-top:2px}
+.btn-go{width:100%;padding:16px;background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;border:none;border-radius:var(--r);font-family:'Nunito',sans-serif;font-size:18px;font-weight:800;cursor:pointer;box-shadow:0 6px 0 var(--blue2),0 8px 24px rgba(67,97,238,.3);transition:transform .12s,box-shadow .12s}
+.btn-go:hover{transform:translateY(-3px);box-shadow:0 9px 0 var(--blue2),0 12px 28px rgba(67,97,238,.35)}
+.btn-go:active{transform:translateY(3px);box-shadow:0 3px 0 var(--blue2)}
+
+/* ── QUIZ ── */
+.q-shell{background:var(--card);border-radius:24px;box-shadow:0 8px 40px rgba(67,97,238,.1);overflow:hidden;max-height:490px;display:flex;flex-direction:column}
+
+/* topbar */
+.topbar{padding:12px 16px 10px;border-bottom:1.5px solid var(--border);display:flex;align-items:center;gap:10px;flex-shrink:0}
+.xbtn{width:30px;height:30px;border:1.5px solid var(--border);border-radius:8px;background:none;cursor:pointer;font-size:14px;color:var(--gray);display:flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0}
+.xbtn:hover{background:#fff0f0;border-color:var(--red);color:var(--red)}
+.prog-col{flex:1}
+.prog-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+.prog-cat{font-size:11px;font-weight:800;color:var(--blue);text-transform:uppercase;letter-spacing:.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:180px}
+.prog-n{font-size:11px;font-weight:700;color:var(--gray);white-space:nowrap}
+.bar-bg{height:8px;background:#e8edf8;border-radius:99px;overflow:hidden}
+.bar-fill{height:100%;background:linear-gradient(90deg,var(--blue),#7209b7);border-radius:99px;transition:width .5s cubic-bezier(.34,1.56,.64,1)}
+.topbar-r{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.hearts{display:flex;gap:1px;font-size:16px}
+.heart{transition:all .3s}
+.heart.gone{opacity:.2;filter:grayscale(1);transform:scale(.7)}
+.xp-tag{background:#fff8e0;border:1.5px solid var(--yellow);border-radius:99px;padding:3px 9px;font-size:12px;font-weight:800;color:#8a6200;white-space:nowrap}
+
+/* question area */
+.q-body{flex:1;overflow-y:auto;padding:14px 16px 0;scrollbar-width:thin;scrollbar-color:#e0e6f0 transparent}
+.q-body::-webkit-scrollbar{width:4px}
+.q-body::-webkit-scrollbar-thumb{background:#e0e6f0;border-radius:4px}
+.q-cat{font-size:11px;font-weight:800;color:var(--blue);text-transform:uppercase;letter-spacing:.8px;display:flex;align-items:center;gap:6px;margin-bottom:10px}
+.q-dot{width:7px;height:7px;background:var(--blue);border-radius:50%;box-shadow:0 0 0 3px rgba(67,97,238,.2)}
+.q-text{font-size:clamp(14px,2.8vw,16px);font-weight:700;line-height:1.55;margin-bottom:14px;color:var(--text)}
+.opts{display:flex;flex-direction:column;gap:7px;padding-bottom:14px}
+.opt{width:100%;padding:11px 13px;background:var(--card);border:2px solid var(--border);border-radius:11px;cursor:pointer;text-align:left;display:flex;align-items:center;gap:10px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;color:var(--text);transition:all .13s;line-height:1.35;position:relative;overflow:hidden}
+.opt:hover:not(:disabled){border-color:var(--blue);background:#f0f4ff;transform:translateX(3px)}
+.opt-l{width:26px;height:26px;border-radius:8px;background:#f0f4ff;border:1.5px solid #d0d9f0;font-size:12px;font-weight:900;color:var(--gray);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s}
+.opt.picked-right{border-color:var(--green);background:#f0fff9;animation:bumpR .4s cubic-bezier(.34,1.56,.64,1)}
+.opt.picked-right .opt-l{background:var(--green);border-color:var(--green);color:#fff}
+.opt.picked-wrong{border-color:var(--red);background:#fff2f4;animation:shakeW .35s}
+.opt.picked-wrong .opt-l{background:var(--red);border-color:var(--red);color:#fff}
+.opt.reveal-right{border-color:var(--green);background:#f0fff9}
+.opt.reveal-right .opt-l{background:var(--green);border-color:var(--green);color:#fff}
+.opt.faded{opacity:.3}
+.opt:disabled{cursor:default;transform:none!important}
+@keyframes bumpR{0%{transform:scale(1)}40%{transform:scale(1.02)}100%{transform:scale(1)}}
+@keyframes shakeW{0%,100%{transform:translateX(0)}20%{transform:translateX(-5px)}40%{transform:translateX(5px)}60%{transform:translateX(-3px)}80%{transform:translateX(3px)}}
+
+/* feedback bar */
+.fb{flex-shrink:0;display:none;align-items:center;gap:10px;padding:11px 16px;border-top:2px solid transparent}
+.fb.on{display:flex}
+.fb.ok{background:#f0fff9;border-color:#a0f0d0}
+.fb.no{background:#fff2f4;border-color:#ffb3bc}
+.fb-icon{font-size:28px;flex-shrink:0}
+.fb-txt{flex:1;min-width:0}
+.fb-head{font-size:14px;font-weight:900}
+.fb.ok .fb-head{color:var(--green2)}
+.fb.no .fb-head{color:var(--red2)}
+.fb-detail{font-size:11px;font-weight:600;color:var(--gray);line-height:1.45;margin-top:2px}
+.btn-cont{padding:9px 18px;border:none;border-radius:10px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:all .12s}
+.fb.ok .btn-cont{background:var(--green);color:#fff;box-shadow:0 4px 0 var(--green2)}
+.fb.ok .btn-cont:hover{transform:translateY(-2px);box-shadow:0 6px 0 var(--green2)}
+.fb.no .btn-cont{background:var(--red);color:#fff;box-shadow:0 4px 0 var(--red2)}
+.fb.no .btn-cont:hover{transform:translateY(-2px);box-shadow:0 6px 0 var(--red2)}
+
+/* ── RESULT ── */
+.res-card{background:var(--card);border-radius:24px;padding:32px 24px;box-shadow:0 8px 40px rgba(67,97,238,.12);text-align:center;position:relative;overflow:hidden}
+.trophy{font-size:72px;display:block;animation:dropIn .7s cubic-bezier(.34,1.56,.64,1)}
+@keyframes dropIn{from{transform:scale(0) rotate(-20deg);opacity:0}to{transform:scale(1) rotate(0);opacity:1}}
+.stars-row{display:flex;justify-content:center;gap:8px;margin:6px 0 14px}
+.rstar{font-size:34px;opacity:0}
+.rstar.lit{animation:starIn .5s cubic-bezier(.34,1.56,.64,1) forwards}
+@keyframes starIn{to{opacity:1;transform:scale(1) rotate(0)}from{opacity:0;transform:scale(0) rotate(-20deg)}}
+.res-title{font-size:clamp(22px,5vw,28px);font-weight:900;margin-bottom:4px}
+.res-sub{font-size:13px;color:var(--gray);font-weight:600;margin-bottom:20px}
+.res-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:20px}
+.res-box{background:#f8faff;border:1.5px solid var(--border);border-radius:12px;padding:12px 6px}
+.res-n{font-size:26px;font-weight:900;color:var(--blue)}
+.res-l{font-size:10px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.5px;margin-top:2px}
+.res-btns{display:flex;flex-direction:column;gap:8px}
+.btn-again{width:100%;padding:15px;background:linear-gradient(135deg,var(--green),var(--green2));color:#fff;border:none;border-radius:var(--r);font-family:'Nunito',sans-serif;font-size:17px;font-weight:800;cursor:pointer;box-shadow:0 5px 0 var(--green2),0 7px 20px rgba(6,214,160,.3);transition:all .12s}
+.btn-again:hover{transform:translateY(-2px);box-shadow:0 7px 0 var(--green2)}
+.btn-home-sm{width:100%;padding:12px;border:1.5px solid var(--border);border-radius:var(--r);font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;cursor:pointer;background:none;color:var(--gray);transition:all .15s}
+.btn-home-sm:hover{border-color:var(--blue);color:var(--blue)}
+
+/* ── PARTICLES ── */
+.confetti{position:fixed;pointer-events:none;z-index:9999;font-size:12px;animation:cfall linear forwards}
+@keyframes cfall{0%{opacity:1;transform:translateY(0) rotate(0)}100%{opacity:0;transform:translateY(110vh) rotate(600deg)}}
+.spark{position:fixed;pointer-events:none;z-index:9999;border-radius:50%;animation:spark ease-out forwards}
+@keyframes spark{to{opacity:0;transform:translate(var(--dx),var(--dy)) scale(0)}}
+.floatxp{position:fixed;pointer-events:none;z-index:9999;font-size:18px;font-weight:900;color:var(--yellow2);text-shadow:0 2px 8px rgba(0,0,0,.15);animation:fxp .9s ease-out forwards}
+@keyframes fxp{0%{opacity:1;transform:translateY(0) scale(.7)}20%{transform:translateY(-8px) scale(1.1)}100%{opacity:0;transform:translateY(-60px) scale(.9)}}
+.popbadge{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;z-index:9999;font-size:38px;font-weight:900;animation:pbadge 1s ease forwards;white-space:nowrap;text-shadow:0 4px 20px rgba(0,0,0,.2)}
+@keyframes pbadge{0%{opacity:0;transform:translate(-50%,-50%) scale(.3)}30%{opacity:1;transform:translate(-50%,-50%) scale(1.2)}70%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-55%) scale(.9)}}
+
+@media(max-width:400px){.topbar{padding:10px 12px}.q-body{padding:12px 12px 0}.opts{gap:6px}.opt{padding:9px 11px;font-size:12px}.fb{padding:9px 12px}.home-card{padding:22px 16px}.res-card{padding:24px 16px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- HOME -->
+<div id="home" class="screen on">
+<div class="home-card">
+  <span class="plane">✈️</span>
+  <div class="home-badge">ATA Chapter 21</div>
+  <h1 class="home-h1">B737NG Air Systems<br><span>Comprehension Quiz</span></h1>
+  <p class="home-sub">100 randomised questions covering the complete Air Conditioning &amp; Pressurization chapter.</p>
+  <div class="home-pills">
+    <span class="pill">🌡️ Pack Flow</span>
+    <span class="pill">❄️ ACM &amp; Water Sep</span>
+    <span class="pill">🔄 Temperature</span>
+    <span class="pill">💨 Distribution</span>
+    <span class="pill">⚙️ Equip Cooling</span>
+    <span class="pill">🏔️ Pressurization</span>
+  </div>
+  <div class="home-meta">
+    <div class="meta-box"><div class="meta-n">100</div><div class="meta-l">Questions</div></div>
+    <div class="meta-box"><div class="meta-n">3</div><div class="meta-l">Lives</div></div>
+    <div class="meta-box"><div class="meta-n">6</div><div class="meta-l">Topics</div></div>
+  </div>
+  <button class="btn-go" onclick="startGame()">✈️ Start Quiz</button>
+</div>
+</div>
+
+<!-- QUIZ -->
+<div id="quiz" class="screen">
+<div class="q-shell">
+  <div class="topbar">
+    <button class="xbtn" onclick="confirmQuit()">✕</button>
+    <div class="prog-col">
+      <div class="prog-top">
+        <span class="prog-cat" id="cat-lbl">Pack Flow</span>
+        <span class="prog-n"><span id="qn">1</span>/<span id="qtot">100</span></span>
+      </div>
+      <div class="bar-bg"><div class="bar-fill" id="bar" style="width:0%"></div></div>
+    </div>
+    <div class="topbar-r">
+      <div class="hearts" id="hearts">
+        <span class="heart" id="h0">❤️</span><span class="heart" id="h1">❤️</span><span class="heart" id="h2">❤️</span>
+      </div>
+      <div class="xp-tag">⚡<span id="xpdis">0</span></div>
+    </div>
+  </div>
+
+  <div class="q-body" id="q-body">
+    <div class="q-cat"><div class="q-dot"></div><span id="q-cat">Pack Flow Control</span></div>
+    <div class="q-text" id="q-text"></div>
+    <div class="opts" id="opts"></div>
+  </div>
+
+  <div class="fb" id="fb">
+    <span class="fb-icon" id="fb-icon">✅</span>
+    <div class="fb-txt">
+      <div class="fb-head" id="fb-head">Correct!</div>
+      <div class="fb-detail" id="fb-det"></div>
+    </div>
+    <button class="btn-cont" id="btn-cont" onclick="advance()">Next →</button>
+  </div>
+</div>
+</div>
+
+<!-- RESULT -->
+<div id="result" class="screen">
+<div class="res-card">
+  <span class="trophy" id="trophy">🏆</span>
+  <div class="stars-row">
+    <span class="rstar" id="rs0">⭐</span>
+    <span class="rstar" id="rs1">⭐</span>
+    <span class="rstar" id="rs2">⭐</span>
+  </div>
+  <div class="res-title" id="res-title">Session Complete!</div>
+  <div class="res-sub" id="res-sub">Great work!</div>
+  <div class="res-grid">
+    <div class="res-box"><div class="res-n" id="r-xp">0</div><div class="res-l">XP</div></div>
+    <div class="res-box"><div class="res-n" id="r-acc">0%</div><div class="res-l">Accuracy</div></div>
+    <div class="res-box"><div class="res-n" id="r-str">0</div><div class="res-l">Best Streak</div></div>
+  </div>
+  <div class="res-btns">
+    <button class="btn-again" onclick="startGame()">🔁 Play Again</button>
+    <button class="btn-home-sm" onclick="goHome()">← Back to Home</button>
+  </div>
+</div>
+</div>
+
+</div><!-- /wrap -->
+
+<script>
+// ═══════════════════════════════════════════════════
+// QUESTION BANK — 100 questions from B737NG ATA 21
+// ═══════════════════════════════════════════════════
+const BANK = [
+// ── PACK FLOW CONTROL (30 Q) ──────────────────────
+{c:"🌡️ Pack Flow",q:"What are the two primary functions of the Flow Control and Shutoff Valve (FCSOV)?",o:["Measure temperature and control ram air","On/Off control of the packs AND control the rate of airflow into the airplane","Regulate trim air pressure and close during overheat","Modulate the air mix valve and schedule zone temperatures"],a:1,d:"The FCSOV controls pack on/off AND the rate of airflow. It is spring-loaded closed and pneumatically actuated."},
+{c:"🌡️ Pack Flow",q:"The FCSOV is spring-loaded to which position?",o:["Open","Neutral – 50% open","Closed","Modulating"],a:2,d:"The FCSOV is spring-loaded CLOSED. The pneumatic actuator must be pressurized to open the valve."},
+{c:"🌡️ Pack Flow",q:"In the FCSOV, which solenoid provides the On/Off (open/close) function?",o:["Solenoid A","Solenoid B","Solenoid C","Solenoid D"],a:2,d:"Solenoid C is the On/Off solenoid. Its open coil energizes to open the valve; its close coil energizes (from battery bus) to close it."},
+{c:"🌡️ Pack Flow",q:"What is the Low Flow Mode solenoid combination in a standard (non-electronic) FCSOV?",o:["Solenoid A and C energized","Solenoid B and C energized","Solenoid C only energized","All solenoids de-energized"],a:1,d:"Low Flow Mode = Solenoid B AND C energized. High Flow Mode = Solenoid C only. APU High Flow = Solenoid A and C."},
+{c:"🌡️ Pack Flow",q:"In APU High Flow Mode, which solenoids in the FCSOV are energized?",o:["A and B","B and C","A and C","A, B, and C"],a:2,d:"APU High Flow Mode energizes Solenoid A and C. This provides maximum flow for ground cooling/heating with APU."},
+{c:"🌡️ Pack Flow",q:"The left FCSOV automatically goes to high flow when which THREE conditions are simultaneously true?",o:["On the ground, both packs HIGH, and bleed air on","In the air, flaps are up, and the right pack valve is closed","In the air, flaps not up, and trim air switch ON","On the ground, APU running at 95%, and pack switch AUTO"],a:1,d:"K18 Flow Mode Relay energizes (commanding high flow) when: airplane in the air, flaps up, AND right pack valve is closed."},
+{c:"🌡️ Pack Flow",q:"If both left AND right engine bleed switches are placed in the OFF position, what happens to both FCSBVs?",o:["Both valves close to protect the packs","Both valves automatically go to high flow mode","Both valves go to APU high flow mode","They remain in normal (low) flow"],a:1,d:"With both engine bleed switches OFF, both FCSBVs automatically operate in high flow mode regardless of other conditions."},
+{c:"🌡️ Pack Flow",q:"The Pack Inlet Pressure Sensor (PIPS) sends data to which controller?",o:["Air Conditioning Accessory Unit (ACAU)","Cabin Pressure Controller (CPC)","Pack Flow Temperature Controller (PFTC)","Flight Management Computer (FMC)"],a:2,d:"The PIPS sends bleed pressure data (downstream of FCSOV, upstream of primary heat exchanger) to the PFTC for pressure and flow control."},
+{c:"🌡️ Pack Flow",q:"The Flow Sensor used with the electronic FCSOV is what type of sensor?",o:["Vortex flowmeter","Pitot-static tube","Hot wire anemometer","Turbine flow sensor"],a:2,d:"The Flow Sensor is a hot wire anemometer, hermetically sealed. It has one heated and one unheated 1000-ohm platinum temperature element."},
+{c:"🌡️ Pack Flow",q:"What temperature differential does the PFTC maintain between the heated and unheated elements of the flow sensor?",o:["15°F","25°F","35°F","45°F"],a:3,d:"The PFTC provides current to maintain exactly 45°F difference between heated and ambient elements. The current needed determines mass flow rate."},
+{c:"🌡️ Pack Flow",q:"The three rotating sections of the Air Cycle Machine (ACM) are mounted on what?",o:["Separate shafts connected by a gearbox","A common shaft supported by oil bearings","A common shaft supported by air (foil) bearings","Individual bearings on the pack casing"],a:2,d:"The ACM has Turbine, Compressor, and Fan sections on a COMMON SHAFT supported by AIR BEARINGS. No oil servicing is required."},
+{c:"🌡️ Pack Flow",q:"What does the ACM Fan section do when the airplane is on the ground?",o:["Provides emergency pressurization","Drives the compressor section","Pulls cooling air through the ram air duct and heat exchangers","Removes water from the air stream"],a:2,d:"On the ground with no ram airflow, the ACM Fan pulls air in through the ram air inlet, through the heat exchangers, and pushes it out the ram air exhaust."},
+{c:"🌡️ Pack Flow",q:"In the pack air cycle, after the compressor, the air goes to which component to be cooled by ram air?",o:["Primary Heat Exchanger","Reheater","Secondary Heat Exchanger","Condenser"],a:2,d:"After the ACM compressor raises temperature and pressure, the air goes to the SECONDARY heat exchanger to be cooled by ram air before entering the reheater."},
+{c:"🌡️ Pack Flow",q:"What is the purpose of the Condenser in the pack cycle?",o:["Pre-heats the air before the turbine to improve efficiency","Cools air below dew point so moisture condenses from vapor to liquid","Removes water mechanically from the air stream","Regulates the temperature of ram air exhausted from the pack"],a:1,d:"The Condenser cools pack air below its dew point using cold turbine discharge air, causing water vapor to condense into liquid for removal."},
+{c:"🌡️ Pack Flow",q:"The High Pressure Water Separator assembly includes which sub-components?",o:["Reheater, Condenser, and two Water Extractors","Primary heat exchanger, ACM, and Condenser","RAM air actuator, deflector door, and water injector","Turbine, Compressor, and Fan sections"],a:0,d:"The HP Water Separator has: Reheater, Condenser, two Water Extractors, and assembly frame. It removes water and increases pack efficiency."},
+{c:"🌡️ Pack Flow",q:"Removed water from the HP Water Extractor is routed where?",o:["Overboard via a drain mast","To the water spray injector in the ram air inlet to cool ram air by evaporation","To a holding tank for ground servicing","Back into the primary heat exchanger"],a:1,d:"Water collected by the extractor goes to the water spray injector in the ram air inlet. Evaporation of this water cools the ram air and increases system cooling capacity."},
+{c:"🌡️ Pack Flow",q:"The Reheater in the HP Water Separator does what for efficiency?",o:["Reheats cold discharge air before it reaches the cabin","Minimises the temperature difference between the secondary HX outlet and turbine inlet, reducing warm air addition needed","Prevents ice formation in the ACM turbine","Provides energy to drive the ACM compressor"],a:1,d:"The Reheater is a regenerative HX: it precools air before the condenser, then reheats dry air leaving the extractors. This minimises how much warm air must be added to the pack discharge."},
+{c:"🌡️ Pack Flow",q:"The Temperature Control Valve (TCV) is the primary valve for what?",o:["On/Off control of bleed air to the pack","Controlling the discharge temperature of the air conditioning pack","Limiting trim air pressure to 4 PSI above cabin pressure","Shutting off ram air in case of fire"],a:1,d:"The TCV is the PRIMARY valve to control pack DISCHARGE TEMPERATURE. It uses 115VAC power and is driven by an electric motor actuator."},
+{c:"🌡️ Pack Flow",q:"How are the two Temperature Control Valves related to each other?",o:["Left TCV is primary, right is standby only","They are identical and interchangeable butterfly valves","They have different part numbers and are not interchangeable","One controls temperature, the other controls flow"],a:1,d:"The two TCVs are IDENTICAL and INTERCHANGEABLE electric motor-driven single-plate butterfly valves with 115VAC power."},
+{c:"🌡️ Pack Flow",q:"The Standby Temperature Control Valve provides backup temperature control when what fails?",o:["Ram air door actuator failure","Normal (automatic) pack temperature control failure","FCSOV fails to open","Zone trim air modulating valve failure"],a:1,d:"The Standby TCV provides backup control of pack discharge temperature during normal temperature control system failure. It is spring-loaded closed and pneumatically actuated."},
+{c:"🌡️ Pack Flow",q:"Ice forming in the Condenser creates a differential pressure that opens which valve?",o:["Temperature Control Valve","Trim Air Pressure Regulating Valve","Standby Temperature Control Valve","FCSOV"],a:2,d:"Ice in the Condenser creates differential pressure detected by sense lines to the Delta Pressure Servo of the Standby TCV, opening it. Warm air from the standby TCV melts the ice."},
+{c:"🌡️ Pack Flow",q:"In Ground Mode, what position is the Ram Air Inlet Deflector Door and what is the RAM DOOR FULL OPEN light indication?",o:["Deflector door retracted, light OFF","Deflector door extended (down), panels fully open, light ON","Deflector door up, panels 82% open, light OFF","Deflector door closed, light flashing"],a:1,d:"On the ground: actuator is fully retracted, deflector door EXTENDED (down), modulation panel FULL OPEN. The RAM DOOR FULL OPEN (blue) light is ON."},
+{c:"🌡️ Pack Flow",q:"In Flight Cruise Mode with flaps UP (SRADA aircraft), the modulation panels move between what range?",o:["0% to 50% open","40% to 82% open","75% to 100% open","82% to 100% open"],a:1,d:"In control mode 3 (cruise, flaps up), inlet SRADA modulates panels from 82% DOWN TO 40% of full open to maintain ACM compressor discharge at 230°F (110°C)."},
+{c:"🌡️ Pack Flow",q:"What is the ACM compressor discharge temperature that the RAM air system is designed to maintain?",o:["180°F (82°C)","210°F (99°C)","230°F (110°C)","250°F (121°C)"],a:2,d:"Both the PZTC (non-SRADA) and SRADA systems regulate ram air to maintain ACM compressor discharge temperature at 230°F (110°C)."},
+{c:"🌡️ Pack Flow",q:"The RAM DOOR FULL OPEN light staying on in cruise flight is likely an indication of:",o:["Normal operation – flaps retracted","Dirty or obstructed heat exchanger","Trim air system failure","CPC failure"],a:1,d:"RAM DOOR FULL OPEN on in cruise indicates the heat exchangers need more airflow, typically due to dirty/obstructed heat exchangers (or a ram air system blockage or electrical fault)."},
+{c:"🌡️ Pack Flow",q:"The Pack Discharge Overheat Switch trips at what temperature?",o:["210°F (99°C)","250°F (121°C)","390°F (198°C)","350°F (177°C)"],a:1,d:"Pack Discharge Overheat Switch: 250°F (121°C). Turbine Inlet: 210°F (99°C). Compressor Discharge: 390°F (198°C/199°C)."},
+{c:"🌡️ Pack Flow",q:"The Compressor Discharge Overheat Switch trips at what temperature?",o:["190°F (88°C)","210°F (99°C)","250°F (121°C)","390°F (198°C)"],a:3,d:"The Compressor Discharge Overheat Switch actuates at 390°F (198°C or 199°C). This is the highest trip temperature of the three pack protection switches."},
+{c:"🌡️ Pack Flow",q:"When a pack trip occurs, what amber light illuminates on the Air Conditioning/Bleed Air Controls Panel?",o:["DUAL BLEED","RAM DOOR FULL OPEN","PACK (amber)","ZONE TEMP"],a:2,d:"The PACK amber light illuminates when a pack trip occurs. The MASTER CAUTION and AIR COND annunciator lights also come on."},
+{c:"🌡️ Pack Flow",q:"After the pack overheat condition is corrected, what must the crew do to reset the pack?",o:["Turn PACK switch OFF then AUTO","Push the TRIP RESET switch on the P5-10 panel","Close and reopen the isolation valve","Cycle the APU bleed air switch"],a:1,d:"The Overheat Relay LATCHES. After the overheat clears, the crew must push the TRIP RESET switch on the P5-10 panel to deenergize the relay."},
+{c:"🌡️ Pack Flow",q:"The Pack Temperature Sensor is a what type of device?",o:["Thermocouple","Platinum resistance thermometer","Thermistor – resistance changes with temperature","Bimetallic strip"],a:2,d:"Pack Temperature Sensors are THERMISTOR devices. Their resistance changes with temperature and feeds back to the Pack Zone/Flow Temperature Controllers."},
+{c:"🌡️ Pack Flow",q:"How many Mix Manifold Temperature Sensors are there and where are they located?",o:["One, on the left pack inlet","Two, on the upper aft wall of the Mix Manifold","Two, one in each pack compartment","Three, one per temperature zone"],a:1,d:"There are TWO Mix Manifold Temperature Sensors on the upper aft wall of the Mix Manifold. They feed the standby channel of the OPPOSITE Pack Zone/Flow Temp Controller."},
+
+// ── TEMPERATURE CONTROL (24 Q) ───────────────────
+{c:"🔄 Temp Control",q:"What does the 'C' (Cool) setpoint on the temperature selector correspond to?",o:["55°F","65°F","75°F","85°F"],a:1,d:"C (Cool) = 65°F, W (Warm) = 85°F. Intermediate positions set proportionate temperatures."},
+{c:"🔄 Temp Control",q:"What does the 'W' (Warm) setpoint on the temperature selector correspond to?",o:["75°F","80°F","85°F","90°F"],a:2,d:"W (Warm) = 85°F. C (Cool) = 65°F. Intermediate positions give proportionate temperatures between these limits."},
+{c:"🔄 Temp Control",q:"Turning the temperature selector to the OFF position does what to the trim air modulating valve for that zone?",o:["Opens it fully","Closes it","Has no effect – the ACAU handles this","Commands it to the 50% position"],a:1,d:"When the zone temperature selector is turned to OFF, it CLOSES the related zone Trim Air Modulating Valve and disables that zone's temperature control."},
+{c:"🔄 Temp Control",q:"The Trim Air Pressure Regulating and Shutoff Valve keeps trim air supply at what pressure above cabin pressure?",o:["2 PSI","4 PSI","6 PSI","8 PSI"],a:1,d:"The Trim Air Pressure Regulating Valve limits trim air to 4 PSI above cabin pressure – enough flow for control while minimising pneumatic noise."},
+{c:"🔄 Temp Control",q:"Where is the Trim Air Pressure Regulating and Shutoff Valve located?",o:["Left air conditioning pack compartment","Right air conditioning pack compartment","E/E compartment rack E4","Forward cargo compartment ceiling"],a:1,d:"The Trim Air Pressure Regulating and Shutoff Valve (master trim air valve) is in the RIGHT Air Conditioning Pack compartment."},
+{c:"🔄 Temp Control",q:"If the Trim Air Pressure Regulating and Shutoff Valve closes, what happens to the three zone trim air systems?",o:["They automatically switch to standby control","They are mechanically and electrically disabled","Only the passenger zones are affected","They run on a fixed 75°F demand"],a:1,d:"Closing the master Trim Air Pressure Regulating Valve MECHANICALLY AND ELECTRICALLY DISABLES all three Zone Trim Air Modulating Valves."},
+{c:"🔄 Temp Control",q:"How many Zone Trim Air Modulating Valves are there?",o:["Two","Three","Four","Six"],a:1,d:"There are THREE Zone Trim Air Modulating Valves – one for each zone: Flight Compartment, Forward Passenger, and Aft Passenger."},
+{c:"🔄 Temp Control",q:"The Zone Trim Air Modulating Valves use what power source?",o:["28VDC Battery Bus","28VDC Bus 1","115VAC","Battery Bus only when on ground"],a:2,d:"The Zone Trim Air Modulating Valves are 115VAC powered, electric motor-driven single-plate butterfly valves."},
+{c:"🔄 Temp Control",q:"The Duct Overheat Switch in the flight compartment supply duct actuates at what temperature?",o:["140°F (60°C)","170°F (77°C)","190°F (88°C)","210°F (99°C)"],a:2,d:"Zone Duct Overheat Switches actuate at 190°F (88°C). This signals the ACAU to close the Zone Trim Air Modulating Valve and illuminate the ZONE TEMP light."},
+{c:"🔄 Temp Control",q:"After a zone duct overheat latches, what two conditions must occur to reset normal zone temperature control?",o:["Push TRIP RESET and cycle pack switch","Duct temperature must return to normal AND push P5-10 TRIP RESET switch","Turn TRIM AIR switch OFF then ON","Close and reopen the FCSOV"],a:1,d:"To reset after duct overheat: (1) duct temperature must return to normal, AND (2) push the TRIP RESET switch on the P5-10 panel."},
+{c:"🔄 Temp Control",q:"The three temperature control zones on the -800/900 are:",o:["Left cabin, right cabin, and cargo","Flight compartment, forward passenger, and aft passenger","CONT CABIN, PASS CABIN, and APU","Upper deck, main deck, and lower deck"],a:1,d:"The -800/900 controls three zones: Flight Compartment Zone, Forward Passenger Compartment Zone, and Aft Passenger Compartment Zone."},
+{c:"🔄 Temp Control",q:"In normal AUTO operation, the Pack Zone/Flow Temperature Controller satisfies which zone's cooling requirement to establish pack demand?",o:["The warmest zone (least cooling needed)","The zone that requires the most cooling","An average of all three zones","The flight compartment zone only"],a:1,d:"The controller satisfies the MOST COOLING requirement zone as the Pack Demand signal. Other zones receive trim air to raise their temperature."},
+{c:"🔄 Temp Control",q:"What is the ice protection temperature limit applied to the pack output?",o:["25°F","32°F","35°F (2°C)","40°F"],a:2,d:"Ice protection: a 35°F (2°C) minimum temperature limit is applied to pack output to prevent the Mix Manifold from freezing."},
+{c:"🔄 Temp Control",q:"If the Temperature Selector fails, the system defaults to what temperature demand?",o:["65°F","70°F","75°F (24°C)","80°F"],a:2,d:"Temperature Selector failure causes a DEFAULT to a 75°F (24°C) setpoint. This is noted in the passenger compartment functional description."},
+{c:"🔄 Temp Control",q:"Which Pack Zone/Flow Temp Controller controls the Forward Passenger Zone Trim Air Modulating Valve?",o:["Left controller","Right controller","Either controller alternately","The ACAU directly"],a:1,d:"The RIGHT Pack Zone or Pack Flow Temperature Controller controls the temperature of the FORWARD passenger compartment."},
+{c:"🔄 Temp Control",q:"Which Pack Zone/Flow Temp Controller controls the Aft Passenger Zone Trim Air Modulating Valve?",o:["Right controller","Left controller","Both controllers simultaneously","The ACAU"],a:1,d:"The LEFT Pack Zone or Pack Flow Temperature Controller controls the temperature of the AFT passenger compartment."},
+{c:"🔄 Temp Control",q:"The Flight Compartment zone gets trim air mixed with air from which pack?",o:["Right pack only","Left pack only","Both packs equally","Whichever pack is in high flow"],a:1,d:"Trim air for the flight compartment mixes with air from the LEFT pack. The right controller commands the flight deck Trim Air Modulating Valve."},
+{c:"🔄 Temp Control",q:"Zone duct overheat protection for the cooling pack uses three thermal switches. The indication when any trips is:",o:["RAM DOOR FULL OPEN light only","PACK light, AIR COND annunciator, and MASTER CAUTION come on","Only the ZONE TEMP light illuminates","DUAL BLEED warning"],a:1,d:"When any pack overheat switch (Turbine Inlet 210°F, Pack Discharge 250°F, Compressor Discharge 390°F) trips: PACK amber, AIR COND, and MASTER CAUTION all illuminate."},
+{c:"🔄 Temp Control",q:"What does the ACAU (Air Conditioning Accessory Unit) primarily do in the temperature control system?",o:["Directly modulates the FCSOV","Provides the interface between airplane operational logic and the air systems, and contains safety relay logic","Controls the CPC automatically","Monitors cabin differential pressure"],a:1,d:"The ACAU is the interface between normal temperature control and airplane safety logic. It automatically reconfigures the system to fail-safe modes before faults cause unsafe conditions."},
+{c:"🔄 Temp Control",q:"In STANDBY temperature control, the standby pack control uses which valve?",o:["Temperature Control Valve (primary)","Zone Trim Air Modulating Valve","Standby Temperature Control Valve","Trim Air Pressure Regulating Valve"],a:2,d:"When automatic temperature control fails, the OPPOSITE controller uses the STANDBY Temperature Control Valve to regulate pack output temperature."},
+{c:"🔄 Temp Control",q:"If ALL zone and auto pack temperature controls fail, standby control satisfies which zone's demands?",o:["Flight compartment zone only","Average temperature demand of the two PASSENGER cabin zones (not flight compartment)","All three zones equally","The coldest zone only"],a:1,d:"If ALL zone and auto pack controls fail, standby analog pack control satisfies the AVERAGE temperature demand of the two passenger cabin zones. The flight compartment zone is NOT used."},
+{c:"🔄 Temp Control",q:"The Cabin Temperature Sensor Assembly in the flight compartment has what built-in component to ensure accuracy?",o:["Heater to prevent icing of the sensor","A small fan to pull a continuous air sample over the sensor","A self-calibrating thermocouple","UV light for sensor cleaning"],a:1,d:"The Cabin Temperature Sensor Assembly has a built-in FAN that continuously pulls a sample of compartment air through the assembly and over the sensor and bulb."},
+{c:"🔄 Temp Control",q:"On the -600/700, what temperature causes the Duct Temperature Limit Sensor to send a close signal to the Air Mix Valve?",o:["120°F","130°F","140°F","150°F"],a:2,d:"The Duct Temperature Limit Sensor trips at 140°F on the -600/700. Above 140°F the CTC disconnects the heat signal and sends a COOL (close) signal to the Air Mix Valve."},
+{c:"🔄 Temp Control",q:"On the -600/700, what temperature causes the DUCT OVERHEAT switch to signal the ACAU?",o:["140°F","160°F","190°F (88°C)","210°F"],a:2,d:"The Duct Overheat Switch on the -600/700 actuates at 190°F (88°C), sending a signal to the ACAU which commands the Air Mix Valve to the cold position and illuminates DUCT OVHT."},
+{c:"🔄 Temp Control",q:"On the -600/700, the Cabin Temperature Controller (CTC) is located where?",o:["In the flight compartment ceiling","On the P5 panel","In the EE Compartment on the E4-1 rack","In the right air conditioning compartment"],a:2,d:"The CTC is in the EE Compartment on the E4-1 rack. It controls temperature of conditioned air for the cabin areas."},
+
+// ── AIR DISTRIBUTION (10 Q) ──────────────────────
+{c:"💨 Distribution",q:"The Recirculation System recycles approximately what percentage of cabin air?",o:["25%","50%","75%","100%"],a:1,d:"The recirculation system recycles approximately 50% of cabin air for ventilation, reducing bleed air demand from the pneumatic system."},
+{c:"💨 Distribution",q:"The Trim Air Pressure Regulating Shutoff Valve is the master valve for which components?",o:["Both FCSBVs","Three Zone Trim Air Modulating Valves","Both Temperature Control Valves","All ram air actuators"],a:1,d:"The Trim Air Pressure Regulating and Shutoff Valve supplies all THREE Zone Trim Air Modulating Valves. Closing it mechanically and electrically disables all three."},
+{c:"💨 Distribution",q:"What are the three zones the temperature control system controls on the -800/900?",o:["Nose, mid, and tail","Flight Control, Forward Cabin, and Aft Cabin zones","Captain side, FO side, and cabin","Upper deck, main deck, and cargo"],a:1,d:"The three air conditioning zones: Flight Compartment Zone, Forward Passenger Compartment Zone, and Aft Passenger Compartment Zone."},
+{c:"💨 Distribution",q:"Where does Trim Air for the PASSENGER zones mix with conditioned air?",o:["At the Air Mix Valve","At the Main Mix Manifold","In the Zone Trim Air Modulating Valve itself","In the pack discharge duct"],a:1,d:"Trim air for passenger zones mixes with air from the MAIN MIX MANIFOLD. Trim air for the flight compartment mixes with air from the LEFT pack."},
+{c:"💨 Distribution",q:"Bleed air for the air conditioning packs can come from which three sources?",o:["Engine, APU, or Ground Cart (Ground Pneumatic Connector)","Engine, hydraulic system, or oxygen system","Engine only on B737NG","APU and external only"],a:0,d:"The packs can receive air from: Engine bleed, APU bleed, or Ground Cart (through the Ground Pneumatic Connector Check Valve)."},
+{c:"💨 Distribution",q:"The recirculation system on -800/900 uses what primary components?",o:["Left and right recirculation fans and filters","Ground air conditioning connector and mix manifold","Mix manifold and distribution ducts","Overboard exhaust valve and check valves"],a:0,d:"The primary recirculation components are the Left and Right Recirculation Fans and Filters. They recycle approximately 50% of cabin air."},
+{c:"💨 Distribution",q:"The Main Mix Manifold collects conditioned air from which sources?",o:["Packs and ground conditioned air connector","Engine bleed only","Pack discharge and recirculation fans only","Trim air and pack discharge"],a:0,d:"The Main Mix Manifold is fed by both left and right cooling packs, and also connects to the Ground Conditioned Air Connector for use on the ground."},
+{c:"💨 Distribution",q:"On -800/900, the Forward Cargo Compartment receives heat from what source?",o:["Dedicated cargo heaters powered by 115VAC","Equipment cooling exhaust air under the forward cargo floor and sidewalls","Dedicated bleed air supply","Passenger compartment air only"],a:1,d:"Warm equipment cooling exhaust air flows under the forward cargo compartment floor and along the sidewalls. It mixes with passenger compartment air in the distribution manifold."},
+{c:"💨 Distribution",q:"The Aft Cargo Compartment receives heated air from where?",o:["Equipment cooling exhaust directly","Passenger compartment through foot level grilles, then through the Outflow Valve","Bleed air from the pneumatic duct","Door area heaters"],a:1,d:"Aft cargo heating comes from passenger compartment air entering through foot level grilles and going into the sidewall area around/under the aft cargo through the Outflow Valve."},
+{c:"💨 Distribution",q:"Door Area Heaters on the B737NG are designed to do what?",o:["Heat the nose wheel well only","Supply warm air to prevent cold zones around the four entry doors","Heat the forward cargo hold floor","Provide anti-icing for door seals only"],a:1,d:"Door Area Heaters are electrical heat elements that supply warm air around the four entry doors in the passenger compartment to prevent cold zones near the doors."},
+
+// ── EQUIPMENT COOLING (18 Q) ─────────────────────
+{c:"⚙️ Equip Cooling",q:"The Equipment Cooling System uses two systems to remove heat. What are they?",o:["Primary and Standby fan systems","Supply System (pushes air) and Exhaust System (pulls air)","High flow and normal flow modes","Overboard and recirculation paths"],a:1,d:"The Equipment Cooling uses a SUPPLY System that pushes filtered air and an EXHAUST System that pulls air. Each has a primary and alternate fan."},
+{c:"⚙️ Equip Cooling",q:"The supply fans push filtered air to which equipment?",o:["P1, P2, P3 display units; P9 FMC CDUs; and EE compartment racks","P5, P6, P8, and center aisle stand only","ADIRU and hydraulic control units","Cabin lighting and IFE systems"],a:0,d:"Supply fans push filtered air to P1, P2, P3 (Display Units), P9 (FMC Control Display Units), and Equipment racks in the EE compartment."},
+{c:"⚙️ Equip Cooling",q:"The exhaust fans pull air from which components?",o:["P1, P2, P3 only","P1, P2, P3, P9, P6, P5, P8, and EE racks","EE racks only","APU and engine compartments"],a:1,d:"Exhaust fans pull from: P1/P2/P3 (Display Units), P9 (FMC CDUs), P6 (Circuit Breaker Panel), P5 (Controls & Indication), P8 (Center Aisle Stand), and EE equipment racks."},
+{c:"⚙️ Equip Cooling",q:"The Overboard Exhaust Valve lets exhaust air go overboard when the airplane is on the ground. In flight what does the exhaust air do?",o:["Vents overboard at all times","Supplements heating in the forward cargo compartment","Goes back to the recirculation system","Cools the hydraulic reservoirs"],a:1,d:"In flight, equipment cooling exhaust air SUPPLEMENTS HEATING in the FORWARD CARGO COMPARTMENT. On the ground it vents overboard."},
+{c:"⚙️ Equip Cooling",q:"What happens when the Low Flow Sensor detects a low flow condition?",o:["Automatically switches to the alternate fan","Sends a signal for annunciation on the P5 panel; on the ground the crew call horn sounds","Closes the overboard exhaust valve","Activates fire suppression"],a:1,d:"Low flow detection signals the P5 panel for annunciation (equipment cooling OFF light + Master Caution). On the GROUND the crew call horn also sounds to prevent IRU overheat."},
+{c:"⚙️ Equip Cooling",q:"The Low Flow Sensors are automatically tested (BITE) when?",o:["Every 30 minutes in flight","During power-up","When the pack switch is set to HIGH","Only during maintenance test"],a:1,d:"The Low Flow Sensors are automatically BITE tested during POWER-UP."},
+{c:"⚙️ Equip Cooling",q:"The three modes of operation for the Overboard Exhaust Valve are:",o:["Auto, manual, and smoke","Normal, high flow, and smoke removal","Open, closed, and modulating","Supply, exhaust, and bypass"],a:1,d:"The Overboard Exhaust Valve has three modes: NORMAL, HIGH FLOW, and SMOKE REMOVAL."},
+{c:"⚙️ Equip Cooling",q:"In Smoke Removal Mode, which switches must be set to command the Overboard Exhaust Valve open?",o:["Pack switch to AUTO, recirc fan to OFF","Either L or R pack switch to HIGH, right recirc fan switch to OFF","Both pack switches to HIGH, both recirc fans to OFF","Pack switch to HIGH, isolation valve to CLOSE"],a:1,d:"Smoke Removal Mode: L or R pack switch HIGH + right recirculation fan switch OFF. This energizes smoke control relay R648 and opens the valve."},
+{c:"⚙️ Equip Cooling",q:"In High Flow Mode, what ADDITIONAL condition is required for the Overboard Exhaust Valve to actually open (vs. stay in NORMAL)?",o:["Pack switch must be in HIGH","The open enable signal must be active (Outflow Valve >8.5° open)","Cabin altitude below 8,000 ft","Recirc fan must be in OFF"],a:1,d:"In high flow mode, the OPEN ENABLE signal (Outflow Valve >8.5° open) is required to allow the time delay relay to place the valve in SMOKE (open) position."},
+{c:"⚙️ Equip Cooling",q:"In the Overboard Exhaust Valve control, what is the function of the 5-minute time delay relay R649?",o:["Prevents the valve from opening too quickly during takeoff","Allows cabin pressure to become stable after the Outflow Valve closes before the Overboard Exhaust Valve goes to NORMAL","Delays fan start to prevent arcing","Provides a 5-minute warning before smoke removal mode activates"],a:1,d:"R649's 5-minute delay allows cabin pressure to BECOME STABLE after the Outflow Valve closes (enabling the close enable signal), before the overboard valve is commanded to NORMAL."},
+{c:"⚙️ Equip Cooling",q:"The open enable signal is set when the Outflow Valve is more than how many degrees open?",o:["2.0 degrees","4.5 degrees","8.5 degrees","12 degrees"],a:2,d:"The open enable signal is set when the Outflow Valve is more than 8.5 DEGREES OPEN. It remains true until the valve is less than 2 degrees open."},
+{c:"⚙️ Equip Cooling",q:"In normal mode (both pack switches AUTO, right recirc fan AUTO), the Overboard Exhaust Valve relay R650 is:",o:["Energized, valve open","De-energized, valve in NORMAL position","Energized, valve in SMOKE position","De-energized, valve fully closed"],a:1,d:"In normal mode, relay R650 is DE-ENERGIZED. Power goes through R648 and R650 to energize the valve actuator to the NORMAL position."},
+{c:"⚙️ Equip Cooling",q:"What is the primary power source for the Overboard Exhaust Valve actuator?",o:["115VAC XFR Bus","28VDC Battery Bus","28VDC Bus 1","APU Bus"],a:1,d:"The Overboard Exhaust Valve actuator is controlled by 28VDC Battery Bus power."},
+{c:"⚙️ Equip Cooling",q:"How many fans does each of the supply and exhaust systems have?",o:["One primary only","One primary and one alternate","Two primary and one standby","Three – primary, alternate, and emergency"],a:1,d:"Each system (supply and exhaust) has a PRIMARY fan and an ALTERNATE fan."},
+{c:"⚙️ Equip Cooling",q:"What panel is the equipment cooling supply and exhaust switch ON?",o:["P5-6 (Cabin Pressure Control Module)","P5 forward overhead equipment cooling panel","E/E compartment directly","P8 center aisle stand"],a:1,d:"The equipment cooling SUPPLY and EXHAUST fan switches are on the P5 forward overhead Equipment Cooling Control Panel, which also has NORM and ALTN positions."},
+{c:"⚙️ Equip Cooling",q:"What causes the crew call horn to sound during an equipment cooling fault?",o:["Any equipment cooling fault in flight","Low flow detected on the ground – to prevent IRU overheating","Only when both supply and exhaust fans fail simultaneously","Smoke detection in the EE compartment"],a:1,d:"The crew call horn sounds when low airflow is detected ON THE GROUND. This prevents overheat of the IRUs. The system also lights the OFF light and Master Caution."},
+{c:"⚙️ Equip Cooling",q:"If the Overboard Exhaust Valve is in NORMAL position, it is:",o:["Fully open at all times","Spring-loaded closed – opens only when pressurized (ground) or commanded high flow/smoke (flight)","Commanded closed by the cabin pressurization system","Modulating based on differential pressure"],a:1,d:"In NORMAL position, the valve is functionally open (allowing flow) on the GROUND until the airplane pressurizes. In pressurized flight the normal position is CLOSED unless commanded open for high flow/smoke."},
+{c:"⚙️ Equip Cooling",q:"On B737-600/700 aircraft, the PACK TRIP OFF indication and MASTER CAUTION with AIR COND annunciator illuminate when:",o:["Any zone duct overheat occurs","A pack overheat relay energizes due to overheat switch closure","The door area heater fails","DUAL BLEED condition is detected"],a:1,d:"On -600/700 PACK TRIP OFF (amber), MASTER CAUTION, and AIR COND annunciator illuminate when any overheat relay energizes (any of the three overheat switches closes)."},
+
+// ── PRESSURIZATION (18 Q) ─────────────────────────
+{c:"🏔️ Pressurization",q:"What is the nominal operating differential pressure range for the B737NG pressurization system?",o:["5.0 to 6.5 PSID","7.8 to 8.35 PSID","8.5 to 9.0 PSID","9.5 to 10.0 PSID"],a:1,d:"The pressurization system is designed for nominal operating pressure of 7.8-8.35 PSID, with maximum operating pressure of 8.45 PSID."},
+{c:"🏔️ Pressurization",q:"At what differential pressure do the safety relief valves open for overpressure protection?",o:["7.8 PSID","8.35 PSID","8.45 PSID","8.65 PSID"],a:3,d:"Safety relief valves open at 8.65 PSID for overpressure, and at -1.0 PSID for negative differential pressure protection."},
+{c:"🏔️ Pressurization",q:"The pressurization system controls cabin pressure by controlling what?",o:["The rate of bleed airflow into the cabin","The position of the Outflow Valve to control rate of air leaving the cabin","Both pack output temperature and flow rate","The recirculation fan speed"],a:1,d:"The system controls the POSITION of the OUTFLOW VALVE to control the RATE AT WHICH AIR FLOWS OUT of the cabin, maintaining safe cabin pressure."},
+{c:"🏔️ Pressurization",q:"In automatic pressurization, the active pressure controller keeps cabin altitude at a maximum of:",o:["6,000 ft ISA","8,000 ft ISA","10,000 ft ISA","12,000 ft ISA"],a:1,d:"The active pressure controller keeps cabin altitude at a safe, comfortable pressure altitude of 8,000 ft ISA maximum in normal operation."},
+{c:"🏔️ Pressurization",q:"The Cabin Pressure Control System components include:",o:["Only the two CPCs and Outflow Valve","Cabin Pressure Control Module, two CPCs, Outflow Valve, and Overboard Exhaust Valve","Positive relief valves and negative relief valve only","CPCs, Outflow Valve, and FCSOV"],a:1,d:"The cabin pressure control system: Cabin Pressure Control Module + Two Digital CPCs + Outflow Valve + Overboard Exhaust Valve."},
+{c:"🏔️ Pressurization",q:"The Cabin Pressure RELIEF System components include:",o:["Two CPCs and Outflow Valve","Two Positive Pressure Relief Valves and one Negative Pressure Relief Valve","Overboard Exhaust Valve and Outflow Valve","Cabin Altitude Warning Switches and Warning Horn"],a:1,d:"The pressure relief system is a fail-safe system with: Two Positive Pressure Relief Valves (opening at 8.65 PSID) and one Negative Pressure Relief Valve (opening at -1.0 PSID)."},
+{c:"🏔️ Pressurization",q:"The AUTO FAIL light illuminates to give the crew what indication?",o:["Both CPCs have failed and manual is required","The active CPC is inoperative and control has transferred to the backup CPC","The Outflow Valve has jammed open","Cabin altitude has exceeded 10,000 ft"],a:1,d:"AUTO FAIL indicates the ACTIVE CPC system is inoperative. Control transfers automatically to the backup (alternate) CPC. The ALTN light also illuminates."},
+{c:"🏔️ Pressurization",q:"When BOTH CPC channels fail simultaneously, what distinctive indication confirms dual failure (vs. single failure)?",o:["Both AUTO FAIL and ALTN lights illuminate","AUTO FAIL light ON, but ALTN light does NOT come on","Only the MASTER CAUTION illuminates","Outflow Valve goes to full open automatically"],a:1,d:"DUAL CPC failure: AUTO FAIL light ON, ALTN light does NOT come on (no operative automatic channel to transfer to). The FLT ALT and LAND ALT displays show five dashes (-----)"},
+{c:"🏔️ Pressurization",q:"What conditions cause the AUTO FAIL function to transfer to the backup CPC?",o:["Cabin altitude rate of change >2,000 FPM, cabin altitude >15,800 ft, wiring/OFV/CPC failures, or power loss","Pilot selects ALTN mode","Cabin altitude exceeds 10,000 ft only","Both engines bleed air switches are OFF"],a:0,d:"AUTO FAIL transfers when: power loss, cabin altitude rate >2,000 FPM, cabin altitude >15,800 ft, wiring failures, Outflow Valve component failures, or CPC failures occur."},
+{c:"🏔️ Pressurization",q:"In the MANUAL mode, what does the MANUAL control switch on the P5-6 module control?",o:["APU bleed air flow","The position of the Outflow Valve via a DC motor","Both CPCs simultaneously","Cabin pressurization rate via the FCSOV"],a:1,d:"In MANUAL mode, the three-position toggle switch (CLOSE/NEUTRAL/OPEN) sends signals to the manual DC motor on the aft Outflow Valve assembly."},
+{c:"🏔️ Pressurization",q:"In MANUAL mode, the control module MANUAL switch is spring-loaded to which position?",o:["Open","Close","Neutral","Auto"],a:2,d:"The Manual control switch is a three-position toggle: CLOSE, NEUTRAL, OPEN. It is spring-loaded to the NEUTRAL position."},
+{c:"🏔️ Pressurization",q:"The Cabin Altitude Warning Horn activates when cabin altitude exceeds approximately:",o:["6,000 ft","8,000 ft","10,000 ft","12,000 ft"],a:2,d:"The Cabin Altitude Warning Switches (S128 and S1153) close between 9,000 and 11,000 ft, triggering an intermittent aural horn. The switches provide redundancy."},
+{c:"🏔️ Pressurization",q:"How do the two Cabin Altitude Warning Switches (S128 and S1153) differ in their closure altitude?",o:["S128 closes at exactly 9,000 ft; S1153 at exactly 11,000 ft","Either switch may close anywhere between 9,000 and 11,000 ft – functionally identical with redundancy","S128 is for the captain's side, S1153 for the F/O's side with different setpoints","One is primary, one activates only if primary fails below 8,000 ft"],a:1,d:"S128 and S1153 are FUNCTIONALLY IDENTICAL. Either may close anywhere between 9,000-11,000 ft, providing redundancy. On some aircraft only one 10,000 ft switch is installed."},
+{c:"🏔️ Pressurization",q:"The Cabin Altimeter/Differential Pressure Indicator shows which two parameters?",o:["Cabin altitude AND aircraft altitude","Cabin pressure altitude (short needle, inner scale) AND cabin-to-ambient differential pressure (long needle, outer scale)","Rate of climb AND differential pressure only","Flight altitude AND landing altitude set values"],a:1,d:"The indicator shows: Cabin Pressure ALTITUDE (short needle, inner scale) AND Cabin-To-Ambient DIFFERENTIAL PRESSURE (long needle, outer scale). A separate indicator shows rate of climb."},
+{c:"🏔️ Pressurization",q:"When you push the ALT HORN CUTOUT switch, the K1 relay energizes. What does this do?",o:["Opens the Outflow Valve to reduce cabin altitude","Silences the aural warning horn and latches through the pressure switch","Transfers control to the alternate CPC","Activates the ALTN pressurization mode"],a:1,d:"Pushing ALT HORN CUTOUT energizes relay K1, which stops the aural horn. K1 latches through the pressure switch until cabin altitude drops below 10,000 ft."},
+{c:"🏔️ Pressurization",q:"The red CABIN ALTITUDE lights illuminate on which instrument panels?",o:["P5 overhead panel only","Captain's P1-3 AND First Officer's P3-1 instrument panels","P9 FMC display unit","MFD only"],a:1,d:"The red CABIN ALTITUDE indicator lights illuminate on both the CAPTAIN's instrument panel (P1-3) and the FIRST OFFICER's instrument panel (P3-1)."},
+{c:"🏔️ Pressurization",q:"The Cabin Rate Of Climb Indicator shows what?",o:["Aircraft climb rate","Rate of change in cabin pressure altitude","Differential pressure rate of change","Rate of Outflow Valve movement"],a:1,d:"The Cabin Rate Of Climb Indicator shows the RATE OF CHANGE IN CABIN PRESSURE ALTITUDE – how quickly the cabin altitude is rising or falling."},
+{c:"🏔️ Pressurization",q:"After cabin altitude drops below 10,000 ft (switch opens), what happens to the K1 relay and CABIN ALTITUDE lights?",o:["K1 stays energized; lights remain on until manually reset","K1 de-energizes; CABIN ALTITUDE lights go off; warning circuit resets for next event","The ALT HORN CUTOUT switch must be released to reset","Manual selection of AUTO mode required to reset"],a:1,d:"When cabin altitude drops below 10,000 ft and the switch opens: K1 DE-ENERGIZES, the red CABIN ALTITUDE lights go OFF, and the warning circuit is RESET for the next event."},
+];
+
+// Shuffle utility
+function shuffle(arr){
+  const a=[...arr];
+  for(let i=a.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+// ─── GAME STATE ───────────────────────────────────
+let G={qs:[],idx:0,hearts:3,xp:0,correct:0,streak:0,bestStreak:0,done:false};
+
+function startGame(){
+  G={qs:shuffle(BANK),idx:0,hearts:3,xp:0,correct:0,streak:0,bestStreak:0,done:false};
+  show('quiz');
+  renderQ();
+}
+
+function goHome(){show('home');}
+function confirmQuit(){if(confirm('Quit quiz? Progress will be lost.'))goHome();}
+
+function show(id){
+  ['home','quiz','result'].forEach(s=>document.getElementById(s).classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+}
+
+function renderQ(){
+  G.done=false;
+  const q=G.qs[G.idx];
+  // Progress
+  const pct=Math.round((G.idx/G.qs.length)*100);
+  document.getElementById('bar').style.width=pct+'%';
+  document.getElementById('qn').textContent=G.idx+1;
+  document.getElementById('qtot').textContent=G.qs.length;
+  document.getElementById('cat-lbl').textContent=q.c;
+  document.getElementById('q-cat').textContent=q.c;
+  document.getElementById('q-text').textContent=q.q;
+  // Feedback off
+  const fb=document.getElementById('fb');
+  fb.className='fb';
+  fb.style.display='none';
+  // Hearts
+  updateHearts();
+  // XP
+  document.getElementById('xpdis').textContent=G.xp;
+  // Build opts
+  const opts=document.getElementById('opts');
+  opts.innerHTML='';
+  const labels=['A','B','C','D'];
+  q.o.forEach((o,i)=>{
+    const btn=document.createElement('button');
+    btn.className='opt';
+    btn.innerHTML=`<span class="opt-l">${labels[i]}</span><span>${o}</span>`;
+    btn.onclick=()=>pick(i);
+    opts.appendChild(btn);
+  });
+  // Scroll top
+  document.getElementById('q-body').scrollTop=0;
+}
+
+function pick(idx){
+  if(G.done)return;
+  G.done=true;
+  const q=G.qs[G.idx];
+  const correct=idx===q.a;
+  const btns=[...document.querySelectorAll('.opt')];
+  btns.forEach(b=>b.disabled=true);
+  btns[q.a].classList.add('reveal-right');
+  if(correct){
+    btns[idx].classList.remove('reveal-right');
+    btns[idx].classList.add('picked-right');
+    // Faded others
+    btns.forEach((b,i)=>{if(i!==idx)b.classList.add('faded');});
+    G.correct++;G.streak++;
+    if(G.streak>G.bestStreak)G.bestStreak=G.streak;
+    const xpGain=G.streak>=5?20:G.streak>=3?15:10;
+    G.xp+=xpGain;
+    document.getElementById('xpdis').textContent=G.xp;
+    showFeedback(true,q.d,xpGain);
+    spawnSparks(btns[idx]);
+    if(G.streak===3)showPopBadge('🔥 3 Streak!');
+    if(G.streak===5)showPopBadge('⚡ 5 in a row!');
+    if(G.streak===10)showPopBadge('🌟 10 Streak!');
+    if(G.streak===20)showPopBadge('💥 20 Streak!!');
+  } else {
+    btns[idx].classList.add('picked-wrong');
+    btns.forEach((b,i)=>{if(i!==idx&&i!==q.a)b.classList.add('faded');});
+    G.streak=0;G.hearts--;
+    updateHearts();
+    showFeedback(false,q.d,0);
+  }
+}
+
+function showFeedback(ok,detail,xp){
+  const fb=document.getElementById('fb');
+  fb.className='fb on '+(ok?'ok':'no');
+  fb.style.display='flex';
+  const icons=ok?['✅','🎉','🌟','⭐','🔥','💡','🎯','🏅']:['❌'];
+  const heads=ok?['Correct!','Great!','Well done!','Spot on!','Nailed it!','Right on!','Excellent!']:['Not quite!'];
+  document.getElementById('fb-icon').textContent=icons[Math.floor(Math.random()*icons.length)];
+  document.getElementById('fb-head').textContent=heads[Math.floor(Math.random()*heads.length)];
+  document.getElementById('fb-det').textContent=detail;
+  const cont=document.getElementById('btn-cont');
+  const isLast=G.idx>=G.qs.length-1||G.hearts<=0;
+  cont.textContent=isLast?'See Results →':'Continue →';
+  if(ok&&xp)floatXP('+'+xp+' XP',cont);
+}
+
+function advance(){
+  G.idx++;
+  if(G.idx>=G.qs.length||G.hearts<=0){
+    showResult();
+  } else {
+    renderQ();
+  }
+}
+
+function updateHearts(){
+  [0,1,2].forEach(i=>{
+    document.getElementById('h'+i).classList.toggle('gone',i>=G.hearts);
+  });
+}
+
+function showResult(){
+  const total=G.idx+(G.hearts>0?0:0);
+  const attempted=G.idx;
+  const acc=attempted?Math.round((G.correct/attempted)*100):0;
+  const stars=acc>=90?3:acc>=70?2:acc>=50?1:0;
+  const trophies=['😅','🥉','🥈','🏆'];
+  const titles=['Keep Practicing!','Nice Try!','Well Done!','Outstanding! 🎯'];
+  const subs=[
+    'Review the manual and try again.',
+    'Good effort — study the explanations!',
+    'Strong knowledge of ATA 21!',
+    'You are an ATA 21 expert! ✈️'
+  ];
+  document.getElementById('trophy').textContent=trophies[stars];
+  document.getElementById('res-title').textContent=titles[stars];
+  document.getElementById('res-sub').textContent=subs[stars];
+  document.getElementById('r-xp').textContent=G.xp;
+  document.getElementById('r-acc').textContent=acc+'%';
+  document.getElementById('r-str').textContent=G.bestStreak;
+  ['rs0','rs1','rs2'].forEach((id,i)=>{
+    const el=document.getElementById(id);
+    el.classList.remove('lit');
+    el.style.animationDelay='0s';
+    if(i<stars){
+      setTimeout(()=>{el.style.animationDelay=(i*.2)+'s';el.classList.add('lit');},500+i*120);
+    }
+  });
+  show('result');
+  if(acc>=60)setTimeout(()=>launchConfetti(acc),300);
+}
+
+// ─── EFFECTS ─────────────────────────────────────
+function launchConfetti(acc){
+  const cols=['#4361ee','#06d6a0','#ffd166','#f97316','#7209b7','#ef233c','#06b6d4'];
+  const shapes=['●','■','▲','◆','★','✦'];
+  const count=Math.min(40+Math.floor(acc/3),80);
+  for(let i=0;i<count;i++){
+    setTimeout(()=>{
+      const el=document.createElement('div');
+      el.className='confetti';
+      el.textContent=shapes[Math.floor(Math.random()*shapes.length)];
+      el.style.cssText=`left:${Math.random()*100}vw;top:-20px;color:${cols[Math.floor(Math.random()*cols.length)]};font-size:${10+Math.random()*14}px;animation-duration:${1.4+Math.random()*2}s;animation-delay:${Math.random()*.4}s`;
+      document.body.appendChild(el);
+      setTimeout(()=>el.remove(),4000);
+    },i*22);
+  }
+}
+
+function spawnSparks(btn){
+  const rect=btn.getBoundingClientRect();
+  const cx=rect.left+rect.width/2,cy=rect.top+rect.height/2;
+  const cols=['#ffd166','#06d6a0','#4361ee','#f97316','#7209b7'];
+  for(let i=0;i<10;i++){
+    const el=document.createElement('div');
+    el.className='spark';
+    const a=(i/10)*Math.PI*2;
+    const d=35+Math.random()*45;
+    const dx=Math.cos(a)*d,dy=Math.sin(a)*d;
+    const s=4+Math.random()*5;
+    el.style.cssText=`left:${cx}px;top:${cy}px;width:${s}px;height:${s}px;background:${cols[i%cols.length]};--dx:${dx}px;--dy:${dy}px;animation-duration:${.45+Math.random()*.25}s;border-radius:50%`;
+    document.body.appendChild(el);
+    setTimeout(()=>el.remove(),800);
+  }
+}
+
+function floatXP(txt,refEl){
+  const rect=refEl.getBoundingClientRect();
+  const el=document.createElement('div');
+  el.className='floatxp';
+  el.textContent=txt;
+  el.style.cssText=`left:${rect.left+rect.width*.5}px;top:${rect.top-10}px`;
+  document.body.appendChild(el);
+  setTimeout(()=>el.remove(),1000);
+}
+
+function showPopBadge(txt){
+  const el=document.createElement('div');
+  el.className='popbadge';
+  el.textContent=txt;
+  document.body.appendChild(el);
+  setTimeout(()=>el.remove(),1100);
+}
+</script>
+</body>
+</html>
